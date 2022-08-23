@@ -1,0 +1,17 @@
+.idea/
+.vscode/
+.dockerrc
+.env
+.env.test
+.env.development
+.env.production
+node_modules/
+build/
+tmp/
+temp/
+coverage
+ormconfig.json
+dist
+
+uploads/*
+!uploads/.gitkeep

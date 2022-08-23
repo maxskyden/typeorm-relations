@@ -1,0 +1,45 @@
+{
+  "name": "typeorm-relations",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "nettoquerois <24768847+nettoquerois@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "docker:up": "docker compose --env-file .env.development up -d",
+    "dev": "CI=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
+    "lint": "eslint . --ext .ts",
+    "lint-fix": "eslint . --ext .ts --fix",
+    "typeorm": "CI=development typeorm-ts-node-esm -d src/config/datasource.ts",
+    "typeorm-cjs": "typeorm-ts-node-commonjs",
+    "m:create": "yarn run typeorm-cjs migration:create",
+    "m:gen": "yarn run typeorm migration:generate",
+    "m:run": "yarn run typeorm migration:run"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv-safe": "^8.2.0",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.7"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/dotenv-safe": "^8.1.2",
+    "@types/express": "^4.17.13",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^18.7.10",
+    "@typescript-eslint/eslint-plugin": "^5.34.0",
+    "@typescript-eslint/parser": "^5.34.0",
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.1.0",
+    "typescript": "^4.7.4"
+  }
+}

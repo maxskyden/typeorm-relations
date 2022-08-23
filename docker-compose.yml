@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:latest
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - DATABASE_USER
+      - DATABASE_PASS
+      - DATABASE_NAME
+    volumes:
+      - ./docker/scripts/databases/postgres:/docker-entrypoint-initdb.d/
+    ports:
+      - 5433:5433
