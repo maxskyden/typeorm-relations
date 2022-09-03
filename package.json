@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "docker:up": "docker compose --env-file .env.development up -d",
-    "dev": "CI=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
+    "dev": "CI=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
     "typeorm": "CI=development typeorm-ts-node-esm -d src/config/datasource.ts",

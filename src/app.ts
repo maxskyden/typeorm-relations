@@ -4,8 +4,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 import routes from './routes';
-import AppError from '@shared/errors/AppError';
-import '@shared/infra/typeorm';
+import AppError from './AppError';
 
 const app = express();
 
