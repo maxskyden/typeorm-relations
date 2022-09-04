@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import routes from './routes';
 import AppError from './AppError';
+import './containers';
 
 const app = express();
 
