@@ -3,6 +3,8 @@ import { container } from 'tsyringe';
 import Create from "src/services/order/Create";
 import List from "src/services/order/List";
 import Show from "src/services/order/Show";
+import Update from "src/services/order/Update";
+import Delete from "src/services/order/Delete";
 
 
 
@@ -30,18 +32,18 @@ class OrdersController{
     })
     return response.json(order)
   }
-/*   async update(request: Request, response: Response): Promise<Response>{
+  async update(request: Request, response: Response): Promise<Response>{
     const { id } = request.params
-    const { name } = request.body
+    const { payment_status } = request.body
     const update = container.resolve(Update)
-    const user = await update.execute({ id, name })
-    return response.json(user)
+    const order = await update.execute({ id, payment_status })
+    return response.json(order)
   }
   async delete(request: Request, response: Response): Promise<Response>{
     const { id } = request.params
     const deleteUser = container.resolve(Delete)
     await deleteUser.execute({id})
     return response.json([])
-  } */
+  }
 }
 export default OrdersController
