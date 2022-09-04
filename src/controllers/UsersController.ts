@@ -5,6 +5,7 @@ import Delete from "src/services/user/Delete";
 import List from "src/services/user/List";
 import Show from "src/services/user/Show";
 import Update from "src/services/user/Update";
+import History from "src/services/user/History";
 
 
 class UsersController{
@@ -20,6 +21,12 @@ class UsersController{
     const showUser = container.resolve(Show)
     const user = await showUser.execute({ id })
     return response.json(user)
+  }
+  async history(request: Request, response: Response): Promise<Response>{
+    const { id } = request.params
+    const userHistory = container.resolve(History)
+    const history = await userHistory.execute({ id })
+    return response.json(history)
   }
   async create(request: Request, response: Response): Promise<Response> {
     const { name } = request.body

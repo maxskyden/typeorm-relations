@@ -1,8 +1,14 @@
+import { IOrder } from "./Order"
+
 export interface IUser {
   id: string,
+  user_orders?: IOrder[]
   name: string,
   created_at: Date,
   updated_at: Date
+}
+export interface IFindUsers{
+  id: string
 }
 export interface ISearch {
   page: number
@@ -32,7 +38,12 @@ export interface IUpdateUser{
 export interface IDeleteUser{
   id: string
 }
+export interface IHistory{
+  id: string
+}
 export interface IUsersRepository {
+  findAllByIds(users: IFindUsers[]): Promise<IUser[]>;
+  history(id: string ): Promise<IUser[]>
   findById(id: string): Promise<IUser | null>
   findByName(name:string): Promise<IUser | null>
   findAll({page, skip, take}: ISearch): Promise<IUserPaginate>

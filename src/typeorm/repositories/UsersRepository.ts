@@ -1,6 +1,6 @@
 import { PostgresDataSource } from "@config/datasource";
-import { Repository } from "typeorm";
-import { ICreateUser, ISearch, IUser, IUserPaginate, IUsersRepository } from "src/models/User";
+import { In, Repository } from "typeorm";
+import { ICreateUser, IFindUsers, ISearch, IUser, IUserPaginate, IUsersRepository } from "src/models/User";
 import User from "../entities/User";
 
 class UsersRepository implements IUsersRepository{
@@ -8,7 +8,24 @@ class UsersRepository implements IUsersRepository{
   constructor() {
     this.ormRepository = PostgresDataSource.getRepository(User)
   }
-
+  async findAllByIds(users: IFindUsers[]): Promise<IUser[]> {
+    const userIds = users.map(user => user.id)
+    const existentUsers = await this.ormRepository.find(
+      {
+        where: {
+          id: In(userIds)
+        }
+      }
+    )
+    return existentUsers
+  }
+  async history(id: string): Promise<IUser[]> {
+    const user = await this.ormRepository.find({
+      where: { id },
+      relations:{orders: true}
+    })
+    return user
+  }
   async findById(id: string): Promise<IUser | null> {
     const user = await this.ormRepository.findOneBy({
       id
@@ -42,7 +59,7 @@ class UsersRepository implements IUsersRepository{
     return user
   }
   async remove(user: IUser): Promise<void> {
-    await this.ormRepository.remove(user)
+      await this.ormRepository.delete(user)
   }
 }
 export default UsersRepository

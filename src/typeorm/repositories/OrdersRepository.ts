@@ -47,7 +47,7 @@ class OrdersRepository implements IOrdersRepository{
     return order
   }
   async remove(order: IOrder): Promise<void> {
-    await this.ormRepository.remove(order)
+    await this.ormRepository.delete(order)
   }
 }
 export default OrdersRepository
