@@ -1,5 +1,5 @@
 import AppError from 'src/AppError'
-import { ICreateOrder, IOrder, IOrdersRepository } from 'src/models/Order'
+import { ICreateOrder, IOrder, IOrdersRepository, IRequestOrderCreate } from 'src/models/Order'
 import { IUsersRepository } from 'src/models/User'
 import {injectable, inject} from 'tsyringe'
 
@@ -12,15 +12,16 @@ class Create{
     @inject('UsersRepository')
     private UsersRepository: IUsersRepository,
   ) { }
-  async execute({pid, payment_status, user_id }: ICreateOrder): Promise<IOrder>{
-    const userExists = await this.UsersRepository.findById(user_id as string)
-    if (!userExists) {
+  async execute({pid, payment_status, user_id}: IRequestOrderCreate): Promise<IOrder>{
+    const user = await this.UsersRepository.findById(user_id)
+    if (!user) {
       throw new AppError('User not found')
     }
+    //const {pid, payment_status} = order_infors
     const order = await this.OrdersRepository.create({
-        pid,
-        payment_status,
-        user: userExists
+      user,
+      pid,
+      payment_status
     })
     return order
   }

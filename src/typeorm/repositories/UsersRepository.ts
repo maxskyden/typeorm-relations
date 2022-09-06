@@ -2,6 +2,7 @@ import { PostgresDataSource } from "@config/datasource";
 import { In, Repository } from "typeorm";
 import { ICreateUser, IFindUsers, ISearch, IUser, IUserPaginate, IUsersRepository } from "src/models/User";
 import User from "../entities/User";
+import Order from "../entities/Order";
 
 class UsersRepository implements IUsersRepository{
   private ormRepository: Repository<User>
@@ -20,11 +21,15 @@ class UsersRepository implements IUsersRepository{
     return existentUsers
   }
   async history(id: string): Promise<IUser[]> {
-    const user = await this.ormRepository.find({
-      where: { id },
-      relations:{orders: true}
-    })
-    return user
+    const user = await this.ormRepository
+      .createQueryBuilder("user")
+      .leftJoinAndSelect(
+        "user.orders",
+        "order",
+      )
+      .where({ id })
+      .getMany()
+      return user
   }
   async findById(id: string): Promise<IUser | null> {
     const user = await this.ormRepository.findOneBy({
@@ -40,7 +45,10 @@ class UsersRepository implements IUsersRepository{
   }
   async findAll({ page, skip, take }: ISearch): Promise<IUserPaginate> {
     const [users, count] = await this.ormRepository
-      .createQueryBuilder().skip(skip).take(take).getManyAndCount()
+      .createQueryBuilder()
+      .skip(skip)
+      .take(take)
+      .getManyAndCount()
     const result = {
       per_page: take,
       total: count,

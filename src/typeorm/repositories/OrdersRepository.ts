@@ -1,5 +1,6 @@
 import { PostgresDataSource } from "@config/datasource";
-import { ICreateOrder, IOrder, IOrderPaginate, IOrdersRepository, ISearch } from "src/models/Order";
+import { count } from "console";
+import { ICreateOrder, IHistory, IOrder, IOrderPaginate, IOrdersRepository, ISearch } from "src/models/Order";
 import { Repository } from "typeorm";
 import Order from "../entities/Order";
 
@@ -33,11 +34,28 @@ class OrdersRepository implements IOrdersRepository{
     }
     return result
   }
-  async create({pid, payment_status, user}: ICreateOrder): Promise<IOrder> {
+  async history(id: string, { page, skip, take }: ISearch): Promise<IOrderPaginate> {
+
+    const [orders, count] = await this.ormRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.user', 'user')
+      .where('order.user_id = :id', { id })
+      .skip(skip)
+      .take(take)
+      .getManyAndCount()
+    const result = {
+      per_page: take,
+      total: count,
+      current_page: page,
+      data: orders
+    }
+    return result
+  }
+  async create({ user, pid, payment_status }: ICreateOrder): Promise<IOrder> {
     const order = this.ormRepository.create({
+      user,
       pid,
-      payment_status,
-      user
+      payment_status
     })
     await this.ormRepository.save(order)
     return order

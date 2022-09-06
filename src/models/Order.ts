@@ -23,11 +23,17 @@ export interface IOrderPaginate {
   current_page: number
   data: IOrder[]
 }
-export interface ICreateOrder {
-  pid: string,
+export interface IOrderCreate {
+  pid: string
   payment_status: string
+}
+export interface ICreateOrder {
   user?: IUser
-  user_id?: string
+  pid: string
+  payment_status: string
+}
+export interface IRequestOrderCreate extends ICreateOrder{
+  user_id: string
 }
 export interface IShowOrder{
   id: string
@@ -39,10 +45,15 @@ export interface IUpdateOrder{
 export interface IDeleteOrder{
   id: string
 }
+export interface IHistory{
+  id: string
+  search: ISearch
+}
 export interface IOrdersRepository {
   findById(id: string): Promise<IOrder | null>
   findByName(name:string): Promise<IOrder | null>
-  findAll({page, skip, take}: ISearch): Promise<IOrderPaginate>
+  findAll({ page, skip, take }: ISearch): Promise<IOrderPaginate>
+  history(id:string, { page, skip, take }: ISearch):Promise<IOrderPaginate>
   create(data: ICreateOrder): Promise<IOrder>
   save(order: IOrder): Promise<IOrder>
   remove(order: IOrder): Promise<void>

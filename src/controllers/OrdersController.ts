@@ -5,6 +5,7 @@ import List from "src/services/order/List";
 import Show from "src/services/order/Show";
 import Update from "src/services/order/Update";
 import Delete from "src/services/order/Delete";
+import History from "src/services/order/History";
 
 
 
@@ -21,6 +22,15 @@ class OrdersController{
     const showOrder = container.resolve(Show)
     const order = await showOrder.execute({ id })
     return response.json(order)
+  }
+  async history(request: Request, response: Response): Promise<Response>{
+    const { id } = request.params
+    const page = request.query.page ? Number(request.query.page) : 1
+    const limit = request.query.limit ? Number(request.query.limit) : 15
+
+    const orderHistory = container.resolve(History)
+    const history = await orderHistory.execute(id,{ page, limit })
+    return response.json(history)
   }
   async create(request: Request, response: Response): Promise<Response> {
     const { pid, payment_status, user_id } = request.body
