@@ -1,24 +1,24 @@
 
+import { ILabel } from "src/models/Label";
 import { IOrder } from "src/models/Order";
-import { IUser } from "src/models/User";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
-import User from "./User";
+import Order from "./Order";
 
-@Entity('orders')
-class Order implements IOrder {
+@Entity('labels')
+class Label implements ILabel {
   @PrimaryColumn()
   id: string
 
   @Column()
-  pid: string;
+  name: string;
 
   @Column()
-  payment_status: string;
+  url: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User
+  @ManyToOne(() => Order)
+  @JoinColumn({ name: 'order_id' })
+  order: Order
 
   @CreateDateColumn()
   created_at: Date
@@ -33,4 +33,4 @@ class Order implements IOrder {
   }
 }
 
-export default Order
+export default Label

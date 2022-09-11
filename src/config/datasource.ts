@@ -8,6 +8,7 @@ import { CreateLabels1662183279340 } from 'src/typeorm/migrations/1662183279340-
 import { AddOrderIdToLabels1662183636587 } from 'src/typeorm/migrations/1662183636587-AddOrderIdToLabels';
 import { AddUserIdToOrders1662184215461 } from 'src/typeorm/migrations/1662184215461-AddUserIdToOrders';
 import Order from 'src/typeorm/entities/Order';
+import Label from 'src/typeorm/entities/Label';
 
 const Config: DataSourceOptions ={
   type: 'postgres',
@@ -16,7 +17,7 @@ const Config: DataSourceOptions ={
   username: env.DATABASE_USER,
   password: env.DATABASE_PASS,
   database: env.DATABASE_NAME,
-  entities: [User, Order],
+  entities: [User, Order, Label],
   migrations: [
     CreateUsers1662182947714,
     CreateOrders1662183054885,

@@ -7,8 +7,6 @@ import Update from "src/services/order/Update";
 import Delete from "src/services/order/Delete";
 import History from "src/services/order/History";
 
-
-
 class OrdersController{
   async index(request: Request, response: Response): Promise<Response>{
     const page = request.query.page ? Number(request.query.page) : 1
@@ -34,11 +32,11 @@ class OrdersController{
   }
   async create(request: Request, response: Response): Promise<Response> {
     const { pid, payment_status, user_id } = request.body
-    const createUser = container.resolve(Create)
-    const order = await createUser.execute({
-      pid,
-      payment_status,
+    const createOrder = container.resolve(Create)
+    const order = await createOrder.execute({
       user_id,
+      pid,
+      payment_status
     })
     return response.json(order)
   }
@@ -51,8 +49,8 @@ class OrdersController{
   }
   async delete(request: Request, response: Response): Promise<Response>{
     const { id } = request.params
-    const deleteUser = container.resolve(Delete)
-    await deleteUser.execute({id})
+    const deleteOrder = container.resolve(Delete)
+    await deleteOrder.execute({id})
     return response.json([])
   }
 }

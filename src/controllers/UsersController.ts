@@ -7,7 +7,6 @@ import Show from "src/services/user/Show";
 import Update from "src/services/user/Update";
 import History from "src/services/user/History";
 
-
 class UsersController{
   async index(request: Request, response: Response): Promise<Response>{
     const page = request.query.page ? Number(request.query.page) : 1

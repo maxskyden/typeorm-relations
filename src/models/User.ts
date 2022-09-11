@@ -1,10 +1,9 @@
 import { IOrder } from "./Order"
 
 export interface IUser {
-  id: string,
-  user_orders?: IOrder[]
-  name: string,
-  created_at: Date,
+  id: string
+  name: string
+  created_at: Date
   updated_at: Date
 }
 export interface IFindUsers{

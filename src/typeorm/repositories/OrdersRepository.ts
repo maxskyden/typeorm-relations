@@ -10,14 +10,18 @@ class OrdersRepository implements IOrdersRepository{
     this.ormRepository = PostgresDataSource.getRepository(Order)
   }
 
-  async findById(id: string): Promise<IOrder | null> {
+  async findById(id: string): Promise<Order | null> {
+    const order = await this.ormRepository.findOneBy({id})
+    return order
+  }
+  async findRelationsById(id: string): Promise<Order | null> {
     const order = await this.ormRepository.findOne({
       where: { id },
       relations: [ 'user' ]
     })
     return order
   }
-  async findByName(name: string): Promise<IOrder | null> {
+  async findByName(name: string): Promise<Order | null> {
     const order = await this.ormRepository.findOneBy({
       payment_status: name
     })
@@ -51,7 +55,7 @@ class OrdersRepository implements IOrdersRepository{
     }
     return result
   }
-  async create({ user, pid, payment_status }: ICreateOrder): Promise<IOrder> {
+  async create({ user, pid, payment_status }: ICreateOrder): Promise<Order> {
     const order = this.ormRepository.create({
       user,
       pid,
@@ -60,12 +64,12 @@ class OrdersRepository implements IOrdersRepository{
     await this.ormRepository.save(order)
     return order
   }
-  async save(order: IOrder): Promise<IOrder> {
+  async save(order: Order): Promise<Order> {
     await this.ormRepository.save(order)
     return order
   }
-  async remove(order: IOrder): Promise<void> {
-    await this.ormRepository.delete(order)
+  async remove(order: Order): Promise<void> {
+    await this.ormRepository.remove(order)
   }
 }
 export default OrdersRepository

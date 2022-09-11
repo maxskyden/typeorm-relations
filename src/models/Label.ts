@@ -1,7 +1,10 @@
+import { IOrder } from "./Order"
+
 export interface ILabel {
   id: string
   name: string
   url: string
+  order: IOrder
   created_at: Date
   updated_at: Date
 }
@@ -21,25 +24,36 @@ export interface ILabelPaginate {
   data: ILabel[]
 }
 export interface ICreateLabel {
-  pid: string,
-  payment_status: string
-
-  user_id?: string
+  order: IOrder
+  name: string,
+  url: string
 }
-export interface IShowLabelILabel{
+export interface IRequestCreateLabel{
+  order_id: string,
+  name: string
+  url: string
+}
+export interface IShowLabel{
   id: string
 }
-export interface IUpdateLabelILabel{
+export interface IUpdateLabel{
   id: string
-  payment_status: string
+  name: string
+  url: string
 }
-export interface IDeleteLabelILabel{
+export interface IDeleteLabel{
   id: string
+}
+export interface IFindByQuery{
+  id?: string
 }
 export interface ILabelsRepository {
   findById(id: string): Promise<ILabel | null>
+  findRelationsById(id: string): Promise<ILabel | null>
   findByName(name:string): Promise<ILabel | null>
-  findAll({page, skip, take}: ISearch): Promise<ILabelPaginate>
+  findAll({ page, skip, take }: ISearch): Promise<ILabelPaginate>
+  consulta(id: string, { page, skip, take }: ISearch): Promise<ILabelPaginate>
+  findHistory(id: string, { page, skip, take }: ISearch): Promise<ILabelPaginate>
   create(data: ICreateLabel): Promise<ILabel>
   save(label: ILabel): Promise<ILabel>
   remove(label: ILabel): Promise<void>

@@ -1,3 +1,4 @@
+import { IOrder } from "src/models/Order";
 import { IUser } from "src/models/User";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
