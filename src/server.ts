@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import '@config/dotenv-ci'
 
 import { app } from './app';
-import { PostgresDataSource } from '@shared/infra/typeorm';
+import { PostgresDataSource } from '@config/datasource';
 
 async function init() {
   try {
