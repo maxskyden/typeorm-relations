@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "docker:up": "docker compose --env-file .env.development up -d",
-    "dev": "CI=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
+    "dev": "CI=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
     "typeorm": "CI=development typeorm-ts-node-esm -d src/config/datasource.ts",
@@ -23,7 +23,9 @@
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.7"
+    "tsyringe": "^4.7.0",
+    "typeorm": "^0.3.7",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -31,6 +33,7 @@
     "@types/express": "^4.17.13",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.7.10",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.34.0",
     "@typescript-eslint/parser": "^5.34.0",
     "eslint": "^8.22.0",
