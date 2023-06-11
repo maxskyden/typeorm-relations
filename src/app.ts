@@ -19,6 +19,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
+app.get("/terms", (resquest, response) => {
+  return response.json({
+    message: "Termos de Serviço"
+  })
+})
+
 app.use("v1", routes);
 
 app.use(
