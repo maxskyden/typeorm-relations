@@ -1,3 +1,990 @@
 {
-
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API: Studying Typeform Relations",
+    "description": "A project to practice TypeORM and its relationships using Node.js, Postgres, Docker and TypeScript.",
+    "termsOfService": "http://localhost:3333/terms",
+    "contact": {
+      "name": "Contect the developer",
+      "url": "https://wa.me/5582999567786",
+      "email": "nettoquerois@outlook.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333/v1",
+      "description": "API Version 1.0.0"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Cadastra um novo usuário",
+        "description": "Recebe os dados de um novo usuário e o adiciona ao sistema",
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "users": {
+                  "value": {
+                    "name": "Netto Querois"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário cadastrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Usuário já existe"
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista os usuários",
+        "description": "Retorna uma lista paginada de todos os usuários cadastrados no sistema",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 15,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários obtida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Mostra usuário por ID",
+        "description": "Retona um usuário informando seu ID no formando UUID",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Edita um usuário",
+        "description": "Edita o nome de um usuário informando seu ID no formando UUID",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "O nome de usuário a ser atualizado.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "Netto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Apaga um usuário",
+        "description": "Apaga um usuário informando seu ID no formando UUID",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário apagado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {}
+                },
+                "example": []
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      }
+    },
+    "/users/{id}/history": {
+      "get": {
+        "summary": "Mostra histórico de pedidos do usuário por ID",
+        "description": "Lista todo o histórico de pedidos do usuário informando seu ID no formando UUID",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Histórico de pedidos obtido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/UserOrders"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nome já existe"
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "summary": "Cadastra um novo pedido",
+        "description": "Recebe os dados do pedido e retorna o pedido criado",
+        "tags": [
+          "Order"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pid": {
+                    "type": "string"
+                  },
+                  "payment_status": {
+                    "type": "string",
+                    "enum": [
+                      "aprovado",
+                      "pendente",
+                      "recusado"
+                    ]
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "pid",
+                  "payment_status",
+                  "user_id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pedido cadastrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/OrderUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pedido já existe"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Não encontrado"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista os pedidos",
+        "description": "Retorna uma lista paginada de todos os pedidos cadastrados no sistema",
+        "tags": [
+          "Order"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 15,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pedidos obtida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "Mostra pedido por ID",
+        "description": "Retona um pedido informando seu ID no formando UUID",
+        "tags": [
+          "Order"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Pedido não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza o status de pagamento de um pedido",
+        "tags": [
+          "Order"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "payment_status": {
+                    "type": "string",
+                    "enum": [
+                      "aprovado",
+                      "pendente",
+                      "recusado"
+                    ]
+                  }
+                },
+                "required": [
+                  "payment_status"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pedido atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Apaga um pedido",
+        "description": "Apaga um pedido informando seu ID no formando UUID",
+        "tags": [
+          "Order"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido apagado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {}
+                },
+                "example": []
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Pedido não encontrado"
+          }
+        }
+      }
+    },
+    "/orders/{id}/history": {
+      "get": {
+        "summary": "Mostra histórico de pedidos com o usuário por ID",
+        "description": "Lista todo o histórico de pedidos com usuário informando o ID do usuário no formando UUID",
+        "tags": [
+          "Order"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Histórico de pedidos obtido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/UserOrders"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nome já existe"
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      }
+    },
+    "/labels": {
+      "post": {
+        "summary": "Cadastra uma nova etiqueta",
+        "description": "Recebe os dados de uma nova etiqueta e o adiciona ao sistema",
+        "tags": [
+          "Label"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Label"
+              },
+              "examples": {
+                "labels": {
+                  "value": {
+                    "order_id": "3c688c07-19df-41d4-b329-50117928d28b",
+                    "name": "Shopee",
+                    "url": "https://shopee.com.br"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Etiqueta cadastrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/LabelOrder"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Etiqueta já existe"
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista as etiquetas",
+        "description": "Retorna uma lista paginada de todas as etiquetas cadastradas no sistema",
+        "tags": [
+          "Label"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 15,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de etiquetas obtida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/Label"
+                },
+                "example": {
+                  "per_page": 15,
+                  "total": 1,
+                  "current_page": 1,
+                  "data": [
+                    {
+                      "id": "7e3649da-20d5-4007-ab8f-86cb40fd090b",
+                      "name": "Shopee",
+                      "url": "https://shopee.com.br",
+                      "created_at": "2023-06-12T22:30:55.490Z",
+                      "updated_at": "2023-06-12T22:30:55.490Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      }
+    },
+    "/labels/{id}": {
+      "get": {
+        "summary": "Mostra uma etiqueta por ID",
+        "description": "Retona uma etiqueta informando seu ID no formando UUID",
+        "tags": [
+          "Label"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Etiqueta encontrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Label"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Etiqueta não encontrada"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza o nome e a url de uma etiqueta",
+        "tags": [
+          "Label"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "url"
+                ]
+              },
+              "example": {
+                "name": "Amazon",
+                "url": "https://amazon.com.br/id/etiqueta.pdf"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Etiqueta atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Label"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Apaga uma etiqueta",
+        "description": "Apaga uma etiqueta informando seu ID no formando UUID",
+        "tags": [
+          "Label"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Etiqueta apagada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {}
+                },
+                "example": []
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Etiqueta não encontrada"
+          }
+        }
+      }
+    },
+    "/labels/order/{id}": {
+      "get": {
+        "summary": "Mostra o pedido relacionado a etiqueta",
+        "description": "Lista o pedido relacionando a etiqueta informando o ID da etiqueta no formando UUID",
+        "tags": [
+          "Label"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Etiqueta obtida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/LabelOrder"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserOrders": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            }
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pid": {
+            "type": "string"
+          },
+          "payment_status": {
+            "type": "string",
+            "enum": [
+              "aprovado",
+              "pendente",
+              "recusado"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "OrderUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pid": {
+            "type": "string"
+          },
+          "payment_status": {
+            "type": "string",
+            "enum": [
+              "aprovado",
+              "pendente",
+              "recusado"
+            ]
+          },
+          "user": {
+            "type": "object",
+            "$ref": "#/components/schemas/User"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Label": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LabelOrder": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "order": {
+            "type": "object",
+            "$ref": "#/components/schemas/Order"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
 }
