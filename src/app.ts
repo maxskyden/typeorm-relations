@@ -25,7 +25,7 @@ app.get("/terms", (resquest, response) => {
   })
 })
 
-app.use("v1", routes);
+app.use("/v1", routes);
 
 app.use(
   (error: Error, request: Request, response: Response, next: NextFunction) => {
